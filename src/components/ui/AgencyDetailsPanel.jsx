@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Globe, MapPin, Phone, Building2, Calendar, Users, BookOpen, ExternalLink, Mail, Languages } from 'lucide-react';
+import { X, Globe, MapPin, Phone, Building2, Calendar, Users, BookOpen, ExternalLink, Mail, Languages, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { cofogNames, agencyHistory } from '../../data/constants';
 
@@ -16,6 +16,16 @@ const AgencyDetailsPanel = ({ agency, onClose }) => {
     .map(([year, val]) => ({ year: parseInt(year), val }))
     .sort((a, b) => a.year - b.year)
     : [];
+
+  // Data Quality Assessment
+  const missingData = [];
+  if (!agency.emp) missingData.push('Anställda');
+  if (!agency.w || !agency.m) missingData.push('Könsfördelning');
+  if (!agency.fte) missingData.push('FTE');
+  if (!agency.s) missingData.push('Bildad-datum');
+  if (!agency.city) missingData.push('Ort');
+
+  const dataQuality = missingData.length === 0 ? 'complete' : missingData.length <= 2 ? 'partial' : 'limited';
 
   return (
     <div className="fixed inset-y-0 right-0 w-full md:w-[520px] bg-white shadow-2xl z-50 transform transition-transform duration-300 overflow-y-auto border-l border-slate-100">
@@ -57,6 +67,38 @@ const AgencyDetailsPanel = ({ agency, onClose }) => {
           <div className="flex items-center gap-2 text-sm text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-100">
             <Languages className="w-4 h-4 text-slate-400" />
             <span className="italic">{agency.en}</span>
+          </div>
+        )}
+
+        {/* Data Quality Indicator */}
+        {dataQuality !== 'complete' && (
+          <div className={`flex items-start gap-3 p-3 rounded-lg border ${
+            dataQuality === 'partial'
+              ? 'bg-amber-50 border-amber-200'
+              : 'bg-red-50 border-red-200'
+          }`}>
+            <AlertCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+              dataQuality === 'partial' ? 'text-amber-600' : 'text-red-600'
+            }`} />
+            <div className="flex-1">
+              <div className={`text-xs font-bold uppercase tracking-wider mb-1 ${
+                dataQuality === 'partial' ? 'text-amber-700' : 'text-red-700'
+              }`}>
+                {dataQuality === 'partial' ? 'Delvis data' : 'Begränsad data'}
+              </div>
+              <div className={`text-xs ${
+                dataQuality === 'partial' ? 'text-amber-600' : 'text-red-600'
+              }`}>
+                Saknar: {missingData.join(', ')}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {dataQuality === 'complete' && (
+          <div className="flex items-center gap-2 p-3 rounded-lg border bg-emerald-50 border-emerald-200">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="text-xs font-medium text-emerald-700">Komplett data tillgänglig</div>
           </div>
         )}
 

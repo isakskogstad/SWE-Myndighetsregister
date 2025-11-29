@@ -8,7 +8,8 @@ import {
   Moon,
   Github,
   X,
-  PieChart
+  PieChart,
+  Database
 } from 'lucide-react';
 
 const NavItem = ({ id, label, icon: Icon, active, onClick }) => (
@@ -42,7 +43,8 @@ const Sidebar = ({
     { id: 'analysis', label: 'Analys', icon: PieChart },
     { id: 'departments', label: 'Departement', icon: Building2 },
     { id: 'regions', label: 'Regioner', icon: MapPin },
-    { id: 'list', label: 'Register', icon: Table2 },
+    { id: 'list', label: 'Myndighetsregister', icon: Table2 },
+    { id: 'about-data', label: 'Om Data & Källor', icon: Database },
   ];
   return (
     <aside 

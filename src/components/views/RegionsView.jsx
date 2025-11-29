@@ -18,22 +18,22 @@ const RegionsView = ({ regionStats, agencies }) => {
               Var i landet har myndigheterna sitt säte? Kartan visar koncentrationen av huvudkontor.
             </p>
             
-            <div className="space-y-3">
+            <div className="space-y-2">
               {regionStats.map(r => (
-                <div 
-                  key={r.name} 
+                <div
+                  key={r.name}
                   onMouseEnter={() => setHoveredRegion(r.name)}
                   onMouseLeave={() => setHoveredRegion(null)}
-                  className={`flex items-center justify-between p-3 rounded-xl transition-colors cursor-default group ${hoveredRegion === r.name ? 'bg-slate-100 scale-[1.02] shadow-sm' : 'bg-slate-50 hover:bg-slate-100'}`}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg transition-all cursor-default group ${hoveredRegion === r.name ? 'bg-slate-100 scale-[1.01] shadow-sm' : 'bg-slate-50 hover:bg-slate-100'}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: r.color }} />
-                    <span className="font-medium text-slate-700 group-hover:text-slate-900">{r.name}</span>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-2.5 h-2.5 rounded-full ring-2 ring-white shadow-sm" style={{ backgroundColor: r.color }} />
+                    <span className="font-medium text-sm text-slate-700 group-hover:text-slate-900">{r.name}</span>
                   </div>
-                  <div className="text-right">
-                    <span className="font-bold text-lg text-slate-900 old-style-nums">{r.value}</span>
-                    <span className="text-slate-400 text-xs ml-2 font-mono">
-                      {Math.round((r.value / agencies.filter(a => !a.e).length) * 100)}%
+                  <div className="text-right flex items-baseline gap-2">
+                    <span className="font-bold text-base text-slate-900 old-style-nums tabular-nums">{r.value}</span>
+                    <span className="text-slate-400 text-[11px] font-mono font-semibold">
+                      ({Math.round((r.value / agencies.filter(a => !a.e).length) * 100)}%)
                     </span>
                   </div>
                 </div>

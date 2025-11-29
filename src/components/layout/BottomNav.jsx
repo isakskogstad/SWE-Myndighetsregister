@@ -5,7 +5,7 @@ const BottomNav = ({ activeTab, onTabChange }) => {
   const navItems = [
     { id: 'overview', label: 'Översikt', icon: LayoutDashboard },
     { id: 'analysis', label: 'Analys', icon: PieChart },
-    { id: 'list', label: 'Register', icon: Table2 },
+    { id: 'list', label: 'Lista', icon: Table2 },
     { id: 'departments', label: 'Dept.', icon: Building2 },
     { id: 'regions', label: 'Karta', icon: MapPin },
   ];

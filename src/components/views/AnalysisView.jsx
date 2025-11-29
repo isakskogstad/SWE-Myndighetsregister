@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
   ScatterChart, Scatter, ZAxis
 } from 'recharts';
-import { Briefcase, Calendar, ArrowRight, Zap, Scale, Info } from 'lucide-react';
+import { Briefcase, Calendar, ArrowRight, Zap, Scale, Info, PieChart } from 'lucide-react';
 
 // Info tooltip component
 const InfoTooltip = ({ text }) => (
@@ -35,7 +35,7 @@ const LeaderboardModule = ({ agencies, onSelect }) => {
   }, [agencies, metric]);
 
   return (
-    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm col-span-1 lg:col-span-2">
+    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
         <div>
           <h3 className="font-serif text-xl text-slate-900 font-bold flex items-center gap-2">
@@ -118,19 +118,19 @@ const AgeVsSizeModule = ({ agencies }) => {
   const data = useMemo(() => {
     const currentYear = new Date().getFullYear();
     return agencies
-      .filter(a => !a.e && a.s && a.emp > 50) // Filter out tiny ones for cleaner chart
+      .filter(a => !a.e && a.s && a.emp && a.emp > 0) // Include all with employee data
       .map(a => ({
         name: a.n,
         age: currentYear - parseInt(a.s.split('-')[0]),
         size: a.emp,
         dept: a.d
       }))
-      .filter(d => !isNaN(d.age));
+      .filter(d => !isNaN(d.age) && d.size > 0);
   }, [agencies]);
 
   if (data.length < 5) {
     return (
-      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm col-span-1 lg:col-span-1 flex flex-col">
+      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col">
         <div className="mb-6">
           <h3 className="font-serif text-xl text-slate-900 font-bold flex items-center gap-2">
             <Briefcase className="w-5 h-5 text-primary-500" />
@@ -138,19 +138,19 @@ const AgeVsSizeModule = ({ agencies }) => {
           </h3>
         </div>
         <div className="flex-1 flex items-center justify-center min-h-[300px]">
-          <p className="text-slate-400 text-sm">För få datapunkter att visa. Filtrerar bort myndigheter under 50 anställda.</p>
+          <p className="text-slate-400 text-sm">För få datapunkter att visa. Behöver minst 5 myndigheter med anställningsdata.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm col-span-1 lg:col-span-1 flex flex-col">
+    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col">
       <div className="mb-6">
         <h3 className="font-serif text-xl text-slate-900 font-bold flex items-center gap-2">
           <Briefcase className="w-5 h-5 text-primary-500" />
           Storlek vs Ålder
-          <InfoTooltip text="Scatter-plot som visar sambandet mellan myndighetens ålder och storlek. Större bubblor = fler anställda. Endast myndigheter med >50 anställda visas." />
+          <InfoTooltip text="Scatter-plot som visar sambandet mellan myndighetens ålder och storlek. Större bubblor = fler anställda. Endast aktiva myndigheter med anställningsdata visas." />
         </h3>
         <p className="text-sm text-slate-500">Är äldre myndigheter större? Varje bubbla är en myndighet.</p>
       </div>
@@ -253,7 +253,7 @@ const GenderBalanceModule = ({ agencies, onSelect }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm col-span-1 flex flex-col">
+    <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col">
       <div className="mb-6">
         <h3 className="font-serif text-xl text-slate-900 font-bold flex items-center gap-2">
           <Scale className="w-5 h-5 text-pink-500" />
@@ -359,29 +359,27 @@ const AnalysisView = ({ agencies, onSelectAgency }) => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div className="bg-slate-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden">
-        <div className="relative z-10 max-w-2xl">
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl">
+        <div className="relative z-10 max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-xs font-bold text-white uppercase tracking-wider mb-4">
+            <PieChart className="w-3.5 h-3.5" />
+            Djupanalys
+          </div>
           <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Myndighetsanalys</h2>
           <p className="text-slate-300 text-lg leading-relaxed">
             Utforska extremvärden, korrelationer och trender i den svenska statsförvaltningen genom interaktiva visualiseringar.
           </p>
         </div>
         {/* Abstract Decor */}
-        <div className="absolute right-0 top-0 w-64 h-64 bg-primary-500/20 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-1/4 w-48 h-48 bg-pink-500/20 blur-3xl rounded-full transform translate-y-1/2"></div>
+        <div className="absolute right-0 top-0 w-96 h-96 bg-primary-500/20 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-pink-500/20 blur-3xl rounded-full transform translate-y-1/2"></div>
       </div>
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Full Width Leaderboard */}
-        <LeaderboardModule agencies={agencies} onSelect={onSelectAgency} />
-        
-        {/* Gender Balance */}
-        <GenderBalanceModule agencies={agencies} onSelect={onSelectAgency} />
-
-        {/* Scatter Plot */}
         <div className="col-span-1 lg:col-span-2">
-           <AgeVsSizeModule agencies={agencies} />
+          <LeaderboardModule agencies={agencies} onSelect={onSelectAgency} />
         </div>
 
         {/* Timeline Card */}
@@ -391,6 +389,16 @@ const AnalysisView = ({ agencies, onSelectAgency }) => {
             newest={newest}
             onSelect={onSelectAgency}
           />
+        </div>
+
+        {/* Scatter Plot */}
+        <div className="col-span-1 lg:col-span-2">
+           <AgeVsSizeModule agencies={agencies} />
+        </div>
+
+        {/* Gender Balance */}
+        <div className="col-span-1">
+          <GenderBalanceModule agencies={agencies} onSelect={onSelectAgency} />
         </div>
       </div>
     </div>

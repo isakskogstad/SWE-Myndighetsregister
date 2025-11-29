@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import BottomNav from './BottomNav';
+import ScrollToTop from '../ui/ScrollToTop';
 
 const Layout = ({ 
   children, 
@@ -23,8 +24,8 @@ const Layout = ({
     analysis: 'Analys',
     departments: 'Departement',
     regions: 'Regioner',
-    list: 'Register',
-    compare: 'Jämförelse'
+    list: 'Myndighetsregister',
+    'about-data': 'Om Data & Källor'
   };
 
   return (
@@ -72,6 +73,9 @@ const Layout = ({
         {/* Mobile Bottom Nav */}
         <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
       </div>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 };

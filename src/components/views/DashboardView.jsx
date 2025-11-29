@@ -227,7 +227,7 @@ const DashboardView = ({
       </div>
 
       <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-card relative overflow-hidden">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
             <h3 className="font-serif text-2xl text-slate-900 font-semibold">Utveckling över tid</h3>
             <p className="text-sm text-slate-500 mt-1 font-medium">
@@ -243,6 +243,13 @@ const DashboardView = ({
             <Download className="w-4 h-4" />
             <span className="text-sm font-medium">Exportera</span>
           </button>
+        </div>
+
+        {/* Data Source Citation */}
+        <div className="mb-6 px-3 py-2 bg-slate-50 rounded-lg border border-slate-100">
+          <p className="text-[11px] text-slate-500 font-medium">
+            <span className="font-semibold text-slate-600">Källor:</span> ESV (myndighetsdata, anställda), SCB (befolkning, BNP, könsfördelning) • Uppdaterad december 2024
+          </p>
         </div>
 
         <div className="h-[500px] w-full">

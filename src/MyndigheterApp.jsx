@@ -16,6 +16,7 @@ const RegistryView = React.lazy(() => import('./components/views/RegistryView'))
 const DepartmentsView = React.lazy(() => import('./components/views/DepartmentsView'));
 const RegionsView = React.lazy(() => import('./components/views/RegionsView'));
 const AnalysisView = React.lazy(() => import('./components/views/AnalysisView'));
+const AboutDataView = React.lazy(() => import('./components/views/AboutDataView'));
 
 // Hooks
 const useDarkMode = () => {
@@ -241,10 +242,14 @@ export default function MyndigheterApp() {
         )}
 
         {activeTab === 'regions' && (
-          <RegionsView 
+          <RegionsView
             regionStats={regionStats}
             agencies={agencies}
           />
+        )}
+
+        {activeTab === 'about-data' && (
+          <AboutDataView />
         )}
       </Suspense>
     </Layout>
