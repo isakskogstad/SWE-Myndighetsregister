@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   Area, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   ReferenceArea, ComposedChart, Legend, Label, LabelList
@@ -10,6 +10,23 @@ import RangeSlider from '../ui/RangeSlider';
 import AgencySelector from '../ui/AgencySelector';
 import { governmentPeriods, timeSeriesData, genderHistoryData } from '../../data/constants';
 import { getStatsByYear } from '../../data/swedenStats';
+
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
 
 const AnimatedNumber = ({ value, prefix = '', suffix = '', className = '' }) => (
   <span className={className}>{prefix}{value?.toLocaleString('sv-SE', { maximumFractionDigits: 1 })}{suffix}</span>
@@ -62,6 +79,14 @@ const DashboardView = ({
   selectedAgenciesForChart,
   onToggleAgencyForChart
 }) => {
+  const isMobile = useIsMobile();
+
+  // Auto-stop animation on mobile to prevent hanging
+  useEffect(() => {
+    if (isMobile && isAnimating) {
+      setIsAnimating(false);
+    }
+  }, [isMobile, isAnimating, setIsAnimating]);
 
   // Derived stats
   const currentYearData = timeSeriesData.find(d => d.year === (isAnimating ? animationYear : yearRange[1]));
@@ -196,8 +221,9 @@ const DashboardView = ({
       name: name,
       fill: color,
       stroke: color,
-      strokeWidth: 2,
-      animationDuration: 500,
+      strokeWidth: isMobile ? 1.5 : 2,
+      animationDuration: isMobile ? 0 : 500, // Disable animations on mobile
+      isAnimationActive: !isMobile, // Disable animations on mobile
     };
 
     if (chartType === 'bar') {
@@ -285,15 +311,17 @@ const DashboardView = ({
             setGenderMode={setGenderMode}
           />
           
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-            <button
-              onClick={() => setIsAnimating(!isAnimating)}
-              className={`p-3 rounded-full transition-all shadow-sm flex items-center gap-2 ${isAnimating ? 'bg-red-50 text-red-600 ring-1 ring-red-200' : 'bg-slate-900 text-white hover:bg-slate-800'}`}
-            >
-              {isAnimating ? <Square className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
-              <span className="text-sm font-bold tabular-nums">{isAnimating ? animationYear : "Spela upp"}</span>
-            </button>
-          </div>
+          {!isMobile && (
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+              <button
+                onClick={() => setIsAnimating(!isAnimating)}
+                className={`p-3 rounded-full transition-all shadow-sm flex items-center gap-2 ${isAnimating ? 'bg-red-50 text-red-600 ring-1 ring-red-200' : 'bg-slate-900 text-white hover:bg-slate-800'}`}
+              >
+                {isAnimating ? <Square className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
+                <span className="text-sm font-bold tabular-nums">{isAnimating ? animationYear : "Spela upp"}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="mt-4 pt-4 border-t border-slate-100">
@@ -331,9 +359,12 @@ const DashboardView = ({
           </p>
         </div>
 
-        <div className="h-[500px] w-full">
+        <div className={`w-full ${isMobile ? 'h-[350px]' : 'h-[500px]'}`}>
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={enrichedChartData} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+            <ComposedChart
+              data={enrichedChartData}
+              margin={isMobile ? { top: 10, right: 10, left: 0, bottom: 10 } : { top: 20, right: 20, left: 20, bottom: 20 }}
+            >
               <defs>
                 <linearGradient id="colorAgencies" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#475569" stopOpacity={0.1}/>
@@ -390,9 +421,12 @@ const DashboardView = ({
                   return [value.toLocaleString('sv-SE', { maximumFractionDigits: 1 }), name];
                 }}
               />
-              <Legend wrapperStyle={{paddingTop: '20px', fontSize: '13px', fontWeight: 500}} iconType="circle" />
-              
-              {governmentPeriods
+              <Legend
+                wrapperStyle={{paddingTop: '20px', fontSize: isMobile ? '11px' : '13px', fontWeight: 500}}
+                iconType="circle"
+              />
+
+              {!isMobile && governmentPeriods
                 .filter(p => p.end > yearRange[0] && p.start < yearRange[1])
                 .map((p, i) => (
                   <ReferenceArea

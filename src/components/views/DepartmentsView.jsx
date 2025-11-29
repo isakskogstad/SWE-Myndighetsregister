@@ -2,7 +2,6 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { deptColors } from '../../data/constants';
 import DeptHistoryChart from '../charts/DeptHistoryChart';
-import { ArrowRight } from 'lucide-react';
 
 const getShortDeptName = (dept) => dept.replace('departementet', '').trim();
 
@@ -73,43 +72,6 @@ const DepartmentsView = ({ agencies, departments, departmentStats, onDepartmentC
           <p className="text-sm text-slate-500">Förändring av departementsstruktur över tid</p>
         </div>
         <DeptHistoryChart agencies={agencies} yearRange={[1978, 2025]} />
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {departmentStats.map((dept) => (
-          <button 
-            key={dept.name} 
-            onClick={() => onDepartmentClick(dept.name)}
-            className="group bg-white p-6 rounded-2xl border border-slate-200 hover:border-primary-200 hover:shadow-md transition-all text-left flex flex-col h-full"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div 
-                className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                style={{ backgroundColor: `${deptColors[dept.name]}15`, color: deptColors[dept.name] }}
-              >
-                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'currentColor' }} />
-              </div>
-              <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-primary-500 transition-colors -ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transform duration-300" />
-            </div>
-            
-            <h4 className="font-serif text-lg text-slate-900 font-medium mb-1 leading-tight">
-              {getShortDeptName(dept.name)}
-            </h4>
-            <div className="mt-auto pt-4 flex justify-between items-end">
-              <div>
-                <div className="text-3xl font-serif text-slate-900 font-semibold old-style-nums">{dept.count}</div>
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Myndigheter</div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-mono text-slate-600 old-style-nums font-medium">
-                  {Math.round(dept.emp / 1000)}k
-                </div>
-                <div className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Anställda</div>
-              </div>
-            </div>
-          </button>
-        ))}
       </div>
     </div>
   );
