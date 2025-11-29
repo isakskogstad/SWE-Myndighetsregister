@@ -87,7 +87,8 @@ export async function fetchAllAgencyData() {
  * Uses short property names to match existing MyndigheterApp.jsx format:
  * n=name, s=start, e=end, d=department, en=english, sh=short, emp=employees,
  * fte=FTE, w=women, m=men, str=structure, cof=cofog, gd=hasGD, fteH=FTE history,
- * org=orgNr, tel=phone, web=website, grp=group, city=city, host=host, sfs=SFS ref
+ * org=orgNr, tel=phone, web=website, grp=group, city=city, host=host, sfs=SFS ref,
+ * empH=employee history (total), wH=women history, mH=men history (from AGV, 1980+)
  */
 export function transformAgencyData(rawData) {
   const { merged, wd } = rawData;
@@ -110,12 +111,26 @@ export function transformAgencyData(rawData) {
     // Get Wikidata for start/end dates
     const wdData = wd[name] || {};
 
-    // Get latest employee/FTE data from ESV (most complete)
+    // Get latest employee/FTE data from ESV (most complete for recent years)
     const esvEmployees = esv.employees || {};
     const esvFte = esv.fte || {};
-    const latestYear = Object.keys(esvEmployees).sort().pop();
-    const latestEmp = latestYear ? esvEmployees[latestYear] : undefined;
-    const latestFte = latestYear ? esvFte[latestYear] : undefined;
+    const latestEsvYear = Object.keys(esvEmployees).sort().pop();
+    const latestEsvEmp = latestEsvYear ? esvEmployees[latestEsvYear] : undefined;
+    const latestFte = latestEsvYear ? esvFte[latestEsvYear] : undefined;
+
+    // Get AGV employee history (goes back to 1980 for many agencies)
+    const agvTotal = agv.total || {};
+    const agvWomen = agv.women || {};
+    const agvMen = agv.men || {};
+
+    // Get latest employee count (prefer ESV if available, otherwise AGV)
+    const latestAgvYear = Object.keys(agvTotal).sort().pop();
+    const latestAgvEmp = latestAgvYear ? agvTotal[latestAgvYear] : undefined;
+    const latestEmp = latestEsvEmp || latestAgvEmp;
+
+    // Get latest gender data from AGV
+    const latestWomen = latestAgvYear ? agvWomen[latestAgvYear] : undefined;
+    const latestMen = latestAgvYear ? agvMen[latestAgvYear] : undefined;
 
     // Extract city from AGV office address
     const officeAddr = agv.office_address || '';
@@ -130,14 +145,17 @@ export function transformAgencyData(rawData) {
       e: wdData.end || stkt.end || sfs.end,  // end date (for dissolved agencies)
       en: esv.name_en || wdData.name_en,  // english name
       sh: esv.short_name || stkt.abbreviation,  // short name
-      emp: latestEmp,  // total employees
+      emp: latestEmp,  // total employees (latest available)
       fte: latestFte,  // FTE for latest year
-      w: scb.women,  // women count (from SCB)
-      m: scb.men,  // men count (from SCB)
+      w: latestWomen || scb.women,  // women count (prefer AGV, fallback SCB)
+      m: latestMen || scb.men,  // men count (prefer AGV, fallback SCB)
       str: stkt.structure,  // structure type
       cof: stkt.cofog10,  // COFOG code
       gd: stkt.has_gd,  // has generaldirektör
-      fteH: esvFte,  // FTE history
+      fteH: esvFte,  // FTE history (from ESV)
+      empH: agvTotal,  // Employee history from AGV (1980+)
+      wH: agvWomen,  // Women history from AGV (1980+)
+      mH: agvMen,  // Men history from AGV (1980+)
       org: esv.org_nr || stkt.org_nr,  // organization number
       tel: agv.phone,  // telephone
       web: agv.website,  // website
