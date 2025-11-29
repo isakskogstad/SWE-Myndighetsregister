@@ -176,10 +176,11 @@ export function transformAgencyData(rawData) {
       sfs: sfs.created_by,  // SFS reference
     };
 
-    // Remove undefined/empty properties to keep objects clean
+    // Remove undefined/null/empty properties to keep objects clean
     Object.keys(agency).forEach(key => {
-      if (agency[key] === undefined ||
-          (typeof agency[key] === 'object' && Object.keys(agency[key]).length === 0)) {
+      const val = agency[key];
+      if (val === undefined || val === null ||
+          (typeof val === 'object' && val !== null && Object.keys(val).length === 0)) {
         delete agency[key];
       }
     });
