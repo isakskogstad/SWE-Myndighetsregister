@@ -6,17 +6,16 @@
 
 @layer base {
   body {
-    @apply bg-stone-50 text-stone-800 antialiased selection:bg-sage-200 selection:text-sage-800;
+    /* Pure white background for crisper look */
+    @apply bg-white text-slate-800 antialiased selection:bg-primary-100 selection:text-primary-900;
   }
   
-  /* Old style figures for data numbers */
   .old-style-nums {
     font-variant-numeric: oldstyle-nums;
   }
 }
 
 @layer utilities {
-  /* Ultra-thin scrollbar */
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -25,36 +24,6 @@
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-stone-200 rounded-full hover:bg-stone-300 transition-colors;
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
   }
-  
-  /* Hide scrollbar but keep functionality */
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* Shimmer Animation */
-  .animate-shimmer {
-    animation: shimmer 2s infinite linear;
-    background: linear-gradient(to right, #f5f5f4 4%, #e7e5e4 25%, #f5f5f4 36%);
-    background-size: 1000px 100%;
-  }
-}
-
-@keyframes shimmer {
-  0% { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
-}
-
-/* Chart Tooltip Customization */
-.recharts-tooltip-wrapper {
-  z-index: 50;
-}
-
-.custom-tooltip {
-  @apply bg-white/95 backdrop-blur-sm border border-stone-100 shadow-lg rounded-xl px-3 py-2 text-sm;
 }

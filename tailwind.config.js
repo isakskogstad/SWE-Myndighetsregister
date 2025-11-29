@@ -13,52 +13,41 @@ module.exports = {
         mono: ['JetBrains Mono', 'Menlo', 'monospace'],
       },
       colors: {
-        // Base neutrals - "Stone" (Varmgrå)
-        stone: {
-          50: '#fafaf9',
-          100: '#f5f5f4',
-          200: '#e7e5e4',
-          300: '#d6d3d1',
-          400: '#a8a29e',
-          500: '#78716c',
-          600: '#57534e',
-          700: '#44403c',
-          800: '#292524',
-          900: '#1c1917',
+        // Base neutrals - "Slate" (Cool/Crisp Gray) instead of Stone
+        slate: {
+          50: '#f8fafc', // Very light/white-blueish
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         },
-        // Primary accent - "Sage" (Salvia/Eukalyptus)
-        sage: {
-          50: '#f2f7f6',
-          100: '#e0ece9',
-          200: '#c3dad6',
-          300: '#9ebdbe',
-          400: '#84a59d',
-          500: '#688f86',
-          600: '#53746d',
-          700: '#384d49',
-          800: '#2d3d3a',
-          900: '#1a2422',
+        // Primary accent - "Sky/Blue" for authority, but lighter
+        primary: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          500: '#0ea5e9', // Sky-500
+          600: '#0284c7', // Sky-600
+          900: '#0c4a6e',
         },
-        // Department colors (Muted)
+        // Department colors (Preserved)
         dept: {
-          finans: '#059669',      // Emerald-600
-          justitie: '#0c80f0',    // Blue-500
-          social: '#be185d',      // Pink-700
-          utbildning: '#7c3aed',  // Violet-600
-          forsvar: '#475569',     // Slate-600
-          klimat: '#16a34a',      // Green-600
-          inf: '#d97706',         // Amber-600
+          finans: '#059669',
+          justitie: '#0c80f0',
+          social: '#be185d',
+          utbildning: '#7c3aed',
+          forsvar: '#475569',
+          klimat: '#16a34a',
+          inf: '#d97706',
         }
       },
       boxShadow: {
-        'soft': '0 20px 40px -10px rgba(0,0,0,0.03)',
-        'card': '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)',
-        'float': '0 10px 30px -5px rgba(132, 165, 157, 0.15)',
-      },
-      borderRadius: {
-        'xl': '12px',
-        '2xl': '16px',
-        '3xl': '24px',
+        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)', // Crisper shadow
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
       }
     },
   },

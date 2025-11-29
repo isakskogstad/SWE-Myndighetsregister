@@ -23,7 +23,7 @@ const Layout = ({
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-stone-50/50 text-stone-800 font-sans">
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-800 font-sans">
       <Sidebar 
         activeTab={activeTab} 
         onTabChange={onTabChange}
@@ -48,6 +48,16 @@ const Layout = ({
           <div className="max-w-7xl mx-auto space-y-8 pb-20">
             {children}
           </div>
+
+          {/* Footer */}
+          <footer className="max-w-7xl mx-auto pt-10 pb-6 border-t border-slate-200 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>© {new Date().getFullYear()} Svenska Myndigheter. Ett analysverktyg av Isak Skogstad.</p>
+            <div className="flex gap-4">
+              <a href="https://github.com/civictechsweden/myndighetsdata" target="_blank" rel="noreferrer" className="hover:text-slate-600">Källa: Civic Tech Sweden</a>
+              <a href="https://www.esv.se/" target="_blank" rel="noreferrer" className="hover:text-slate-600">Källa: ESV</a>
+              <a href="https://www.scb.se/" target="_blank" rel="noreferrer" className="hover:text-slate-600">Källa: SCB</a>
+            </div>
+          </footer>
         </main>
       </div>
     </div>

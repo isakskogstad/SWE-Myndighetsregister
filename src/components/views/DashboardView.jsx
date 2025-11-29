@@ -1,9 +1,9 @@
 import React from 'react';
 import { 
-  Area, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  Area, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   ReferenceArea, ComposedChart 
 } from 'recharts';
-import { Building2, Users, Play, Square, ArrowUp, ArrowDown, Minus, Download } from 'lucide-react';
+import { Building2, Users, Play, Square, ArrowUp, ArrowDown, Minus, Download, BarChart3, LineChart, Activity } from 'lucide-react';
 import SeriesSelector, { normalizeSeriesData } from '../SeriesSelector';
 import RangeSlider from '../ui/RangeSlider';
 import { governmentPeriods, timeSeriesData, genderHistoryData } from '../../data/constants';
@@ -21,7 +21,7 @@ const TrendArrow = ({ current, previous, className = '' }) => {
   return <div className={`flex items-center text-red-600 bg-red-50 px-2 py-0.5 rounded-full text-xs font-medium ${className}`}><ArrowDown className="w-3 h-3 mr-1" /> {Math.abs(diff).toFixed(1)}%</div>;
 };
 
-const DashboardView = ({
+const DashboardView = ({ 
   activeSeries,
   setActiveSeries,
   normalizeData,
@@ -33,6 +33,8 @@ const DashboardView = ({
   animationYear,
   activeAgenciesCount
 }) => {
+  const [chartType, setChartType] = React.useState('area');
+
   // Derived stats
   const currentYearData = timeSeriesData.find(d => d.year === (isAnimating ? animationYear : yearRange[1]));
   const prevYearData = timeSeriesData.find(d => d.year === (isAnimating ? animationYear : yearRange[1]) - 1);
@@ -132,13 +134,41 @@ const DashboardView = ({
               {normalizeData ? `Indexerad utveckling (${yearRange[0]}=100)` : 'Absoluta tal'}
             </p>
           </div>
-          <button 
-            onClick={handleExportChart}
-            className="p-2 hover:bg-stone-50 rounded-lg text-stone-400 transition-colors"
-            title="Ladda ner data som CSV"
-          >
-            <Download className="w-4 h-4" />
-          </button>
+          
+          <div className="flex items-center gap-2">
+            {/* Chart Type Selector */}
+            <div className="flex bg-stone-100 rounded-lg p-1 mr-2">
+              <button 
+                onClick={() => setChartType('area')}
+                className={`p-1.5 rounded-md transition-all ${chartType === 'area' ? 'bg-white shadow-sm text-stone-800' : 'text-stone-400 hover:text-stone-600'}`}
+                title="Ytdiagram"
+              >
+                <Activity className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => setChartType('bar')}
+                className={`p-1.5 rounded-md transition-all ${chartType === 'bar' ? 'bg-white shadow-sm text-stone-800' : 'text-stone-400 hover:text-stone-600'}`}
+                title="Stapeldiagram"
+              >
+                <BarChart3 className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => setChartType('line')}
+                className={`p-1.5 rounded-md transition-all ${chartType === 'line' ? 'bg-white shadow-sm text-stone-800' : 'text-stone-400 hover:text-stone-600'}`}
+                title="Linjediagram"
+              >
+                <LineChart className="w-4 h-4" />
+              </button>
+            </div>
+
+            <button 
+              onClick={handleExportChart}
+              className="p-2 hover:bg-stone-50 rounded-lg text-stone-400 transition-colors"
+              title="Ladda ner data som CSV"
+            >
+              <Download className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="h-96 w-full">
@@ -169,7 +199,7 @@ const DashboardView = ({
                 hide={true}
               />
               <Tooltip
-                contentStyle={{ 
+                contentStyle={{
                   backgroundColor: 'rgba(255, 255, 255, 0.95)', 
                   border: '1px solid #e7e5e4', 
                   borderRadius: '12px',
@@ -199,18 +229,38 @@ const DashboardView = ({
                 ))
               }
 
-              {/* Agencies Area */}
+              {/* Agencies Chart - Dynamic Type */}
               {activeSeries.agencies && (
-                <Area 
-                  yAxisId="left"
-                  type="monotone" 
-                  dataKey="count" 
-                  name="Antal Myndigheter"
-                  stroke="#57534e" 
-                  strokeWidth={2} 
-                  fill="url(#colorAgencies)" 
-                  animationDuration={500}
-                />
+                chartType === 'bar' ? (
+                  <Bar
+                    yAxisId="left"
+                    dataKey="count" 
+                    name="Antal Myndigheter"
+                    fill="#57534e"
+                    radius={[2, 2, 0, 0]}
+                  />
+                ) : chartType === 'line' ? (
+                  <Line
+                    yAxisId="left"
+                    type="monotone" 
+                    dataKey="count" 
+                    name="Antal Myndigheter"
+                    stroke="#57534e" 
+                    strokeWidth={3}
+                    dot={false}
+                  />
+                ) : (
+                  <Area 
+                    yAxisId="left"
+                    type="monotone" 
+                    dataKey="count" 
+                    name="Antal Myndigheter"
+                    stroke="#57534e" 
+                    strokeWidth={2} 
+                    fill="url(#colorAgencies)" 
+                    animationDuration={500}
+                  />
+                )
               )}
 
               {/* Employees Line */}
@@ -284,7 +334,7 @@ const DashboardView = ({
           
           <div className="w-full bg-stone-100 rounded-full h-3 mb-2 overflow-hidden">
             <div 
-              className="bg-sage-400 h-full rounded-full transition-all duration-1000 ease-out" 
+              className="bg-sage-400 h-full rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${pctWomen}%` }}
             />
           </div>

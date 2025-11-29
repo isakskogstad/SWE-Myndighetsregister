@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useAgencyData, useUrlState } from './hooks/useAgencyData';
 import { LoadingState, ErrorState } from './components/ui/LoadingState';
-import { deptColors, regionColors } from './data/constants';
+import { regionColors } from './data/constants';
 
 // Layout & Views
 import Layout from './components/layout/Layout';
@@ -10,6 +10,7 @@ import RegistryView from './components/views/RegistryView';
 import DepartmentsView from './components/views/DepartmentsView';
 import RegionsView from './components/views/RegionsView';
 import CompareView from './components/views/CompareView';
+import AgencyDetailsPanel from './components/ui/AgencyDetailsPanel';
 
 // Hooks
 const useDarkMode = () => {
@@ -30,7 +31,7 @@ const useDarkMode = () => {
 export default function MyndigheterApp() {
   // 1. Data & State
   const { data, loading, error, refresh } = useAgencyData();
-  const agencies = data || []; // Ensure agencies is always an array
+  const agencies = data || [];
   const [isDark, setIsDark] = useDarkMode();
   
   // URL State
@@ -45,6 +46,7 @@ export default function MyndigheterApp() {
   const [activeSeries, setActiveSeries] = useState({ agencies: true, employees: false });
   const [normalizeData, setNormalizeData] = useState(false);
   const [compareList, setCompareList] = useState([]);
+  const [selectedAgency, setSelectedAgency] = useState(null);
 
   // Animation Loop
   React.useEffect(() => {
@@ -110,6 +112,12 @@ export default function MyndigheterApp() {
       searchQuery={searchQuery}
       onSearchChange={setSearchQuery}
     >
+      {/* Agency Details Panel (Slide-over) */}
+      <AgencyDetailsPanel 
+        agency={selectedAgency} 
+        onClose={() => setSelectedAgency(null)} 
+      />
+
       {activeTab === 'overview' && (
         <DashboardView 
           activeSeries={activeSeries}
@@ -134,6 +142,7 @@ export default function MyndigheterApp() {
           departments={departments}
           filterText={searchQuery}
           setFilterText={setSearchQuery}
+          onSelectAgency={setSelectedAgency}
         />
       )}
 
