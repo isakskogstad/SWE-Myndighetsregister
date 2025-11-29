@@ -1,27 +1,29 @@
 // Static constants and configuration data
 
 // Department colors for charts and UI
+// Modern, professional palette aligned with design system
 export const deptColors = {
-  "Justitiedepartementet": "#dc2626",
-  "Finansdepartementet": "#16a34a",
-  "Utbildningsdepartementet": "#9333ea",
-  "Socialdepartementet": "#ec4899",
-  "Klimat- och näringslivsdepartementet": "#f59e0b",
-  "Kulturdepartementet": "#8b5cf6",
-  "Försvarsdepartementet": "#475569",
-  "Arbetsmarknadsdepartementet": "#0891b2",
-  "Landsbygds- och infrastrukturdepartementet": "#65a30d",
-  "Utrikesdepartementet": "#0284c7",
-  "Statsrådsberedningen": "#be123c"
+  "Justitiedepartementet": "#0c80f0",      // Primary blue - law & order
+  "Finansdepartementet": "#059669",         // Emerald green - money/finance
+  "Utbildningsdepartementet": "#7c3aed",   // Purple - education/knowledge
+  "Socialdepartementet": "#be185d",         // Rose - social/health care
+  "Klimat- och näringslivsdepartementet": "#0d9488", // Teal - environment/business
+  "Kulturdepartementet": "#8b5cf6",         // Violet - culture/arts
+  "Försvarsdepartementet": "#475569",       // Slate gray - military/defense
+  "Arbetsmarknadsdepartementet": "#0891b2", // Cyan - labor market
+  "Landsbygds- och infrastrukturdepartementet": "#65a30d", // Lime - rural/infrastructure
+  "Utrikesdepartementet": "#0284c7",        // Sky blue - foreign affairs
+  "Statsrådsberedningen": "#dc2626"         // Red - prime minister's office (importance)
 };
 
-// Region colors
+// Region colors for geographic distribution
+// Distinct, accessible colors for map/chart visualization
 export const regionColors = {
-  "Stockholm": "#3b82f6",
-  "Göteborg": "#10b981",
-  "Malmö": "#f59e0b",
-  "Uppsala": "#8b5cf6",
-  "Övrigt": "#6b7280"
+  "Stockholm": "#0c80f0",    // Primary blue - capital
+  "Göteborg": "#059669",     // Emerald - west coast
+  "Malmö": "#d97706",        // Amber - south
+  "Uppsala": "#7c3aed",      // Purple - university city
+  "Övrigt": "#78716c"        // Warm gray - other regions
 };
 
 // COFOG (Classification of Functions of Government) names
