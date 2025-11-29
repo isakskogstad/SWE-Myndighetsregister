@@ -1,15 +1,16 @@
 import React from 'react';
 import { Database, Calendar, AlertCircle, FileText, ExternalLink, Info } from 'lucide-react';
+import ds from '../../styles/designSystem';
 
 const Section = ({ icon: Icon, title, children }) => (
-  <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-    <div className="flex items-center gap-3 mb-4">
-      <div className="p-2 bg-primary-50 rounded-lg">
-        <Icon className="w-5 h-5 text-primary-600" />
+  <div className={ds.cn('bg-white border', ds.cardPadding.lg, ds.radius.lg, ds.shadows.card, ds.animations.normal)} style={{ borderColor: ds.colors.slate[200] }}>
+    <div className={ds.cn('flex items-center mb-4', ds.spacing.md)}>
+      <div className={ds.cn('p-2', ds.radius.md)} style={{ backgroundColor: ds.colors.primary[50] }}>
+        <Icon className={ds.cn(ds.iconSizes.md)} style={{ color: ds.colors.primary[600] }} />
       </div>
-      <h3 className="font-serif text-xl text-slate-900 font-semibold">{title}</h3>
+      <h3 className={ds.cn('font-serif text-slate-900', ds.typography.sizes.xl, ds.typography.weights.semibold)}>{title}</h3>
     </div>
-    <div className="text-slate-600 space-y-3 text-sm leading-relaxed">
+    <div className={ds.cn('text-slate-600 space-y-3', ds.typography.sizes.sm, ds.typography.leading.relaxed)}>
       {children}
     </div>
   </div>
@@ -20,37 +21,37 @@ const DataSource = ({ name, url, description }) => (
     href={url}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group border border-slate-100"
+    className={ds.cn('flex items-start p-3 border group', ds.spacing.md, ds.radius.md, ds.animations.normal, 'hover:bg-slate-50')} style={{ borderColor: ds.colors.slate[100] }}
   >
-    <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-primary-500 mt-0.5 flex-shrink-0" />
+    <ExternalLink className={ds.cn(ds.iconSizes.sm, 'text-slate-400 mt-0.5 flex-shrink-0', ds.animations.normal)} style={{ color: ds.colors.primary[500] }} />
     <div>
-      <div className="font-medium text-slate-900 group-hover:text-primary-700 transition-colors">{name}</div>
-      <div className="text-xs text-slate-500 mt-0.5">{description}</div>
+      <div className={ds.cn('text-slate-900', ds.typography.weights.medium, ds.animations.normal)} style={{ color: ds.colors.primary[700] }}>{name}</div>
+      <div className={ds.cn('text-slate-500 mt-0.5', ds.typography.sizes.xs)}>{description}</div>
     </div>
   </a>
 );
 
 const AboutDataView = () => {
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className={ds.cn('space-y-8 animate-fade-in')}>
 
       {/* Header */}
-      <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl">
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full text-xs font-bold text-white uppercase tracking-wider mb-4">
+      <div className={ds.cn('bg-gradient-to-br p-8 md:p-12 text-white relative overflow-hidden', ds.radius.lg, ds.shadows.strong, ds.gradients.primary)}>
+        <div className={ds.cn('relative z-10', ds.containers.content)}>
+          <div className={ds.cn('inline-flex items-center px-3 py-1.5 bg-white/20 backdrop-blur-sm border border-white/30 text-white uppercase tracking-wider mb-4', ds.spacing.sm, ds.radius.full, ds.typography.sizes.xs, ds.typography.weights.bold)}>
             <Database className="w-3.5 h-3.5" />
             Metodologi
           </div>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Om Data & Källor</h2>
-          <p className="text-primary-50 text-lg leading-relaxed">
+          <h2 className={ds.cn('font-serif mb-4', ds.typography.sizes['3xl'], 'md:text-4xl', ds.typography.weights.bold)}>Om Data & Källor</h2>
+          <p className={ds.cn('text-primary-50', ds.typography.sizes.lg, ds.typography.leading.relaxed)}>
             Transparent information om datakällor, uppdateringsfrekvens, metodik och definitioner för Sveriges Myndighetsregister.
           </p>
         </div>
-        <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 blur-3xl rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
+        <div className={ds.cn('absolute right-0 top-0 w-96 h-96 bg-white/10 blur-3xl transform translate-x-1/2 -translate-y-1/2', ds.radius.full)}></div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className={ds.cn('grid grid-cols-1 lg:grid-cols-2', ds.spacing.lg)}>
 
         {/* Datakällor */}
         <Section icon={Database} title="Datakällor">
@@ -90,16 +91,16 @@ const AboutDataView = () => {
             <li><strong>Könsfördelning:</strong> Årligen, baserat på SCB:s officiella statistik</li>
             <li><strong>Befolkning & BNP:</strong> Årligen, från SCB:s nationalräkenskaper</li>
           </ul>
-          <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Senast uppdaterad</div>
-            <div className="text-slate-900 font-semibold">December 2024</div>
+          <div className={ds.cn('mt-4 p-3 border', ds.radius.md)} style={{ backgroundColor: ds.colors.slate[50], borderColor: ds.colors.slate[100] }}>
+            <div className={ds.cn('text-slate-500 uppercase tracking-wider mb-1', ds.typography.sizes.xs, ds.typography.weights.bold)}>Senast uppdaterad</div>
+            <div className={ds.cn('text-slate-900', ds.typography.weights.semibold)}>December 2024</div>
           </div>
         </Section>
 
         {/* Metodik */}
         <Section icon={FileText} title="Metodik & Beräkningar">
           <p><strong>Indexerad utveckling:</strong> Alla serier normaliseras till basåret (valbart), där basår = 100.
-          Formeln är: <code className="px-1.5 py-0.5 bg-slate-100 rounded text-xs font-mono">Värde(år) / Värde(basår) × 100</code></p>
+          Formeln är: <code className={ds.cn('px-1.5 py-0.5 font-mono', ds.radius.sm, ds.typography.sizes.xs)} style={{ backgroundColor: ds.colors.slate[100] }}>Värde(år) / Värde(basår) × 100</code></p>
 
           <p><strong>Per capita:</strong> Värden divideras med Sveriges befolkning och multipliceras med 100 000 för att visa "per 100 000 invånare".</p>
 
@@ -114,27 +115,27 @@ const AboutDataView = () => {
         <Section icon={Info} title="Definitioner">
           <dl className="space-y-3">
             <div>
-              <dt className="font-semibold text-slate-900">Myndighet</dt>
-              <dd className="text-slate-600 text-sm mt-1">
+              <dt className={ds.cn('text-slate-900', ds.typography.weights.semibold)}>Myndighet</dt>
+              <dd className={ds.cn('text-slate-600 mt-1', ds.typography.sizes.sm)}>
                 Statlig förvaltningsmyndighet under regeringen enligt Regeringsformen.
                 Inkluderar ej affärsverk eller bolag.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-slate-900">Anställda</dt>
-              <dd className="text-slate-600 text-sm mt-1">
+              <dt className={ds.cn('text-slate-900', ds.typography.weights.semibold)}>Anställda</dt>
+              <dd className={ds.cn('text-slate-600 mt-1', ds.typography.sizes.sm)}>
                 Totalt antal anställda (heltid + deltid) per den 31 december varje år.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-slate-900">FTE (Årsarbetskrafter)</dt>
-              <dd className="text-slate-600 text-sm mt-1">
+              <dt className={ds.cn('text-slate-900', ds.typography.weights.semibold)}>FTE (Årsarbetskrafter)</dt>
+              <dd className={ds.cn('text-slate-600 mt-1', ds.typography.sizes.sm)}>
                 Full-Time Equivalent - antal heltidstjänster efter omräkning av deltider.
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-slate-900">Nedlagd myndighet</dt>
-              <dd className="text-slate-600 text-sm mt-1">
+              <dt className={ds.cn('text-slate-900', ds.typography.weights.semibold)}>Nedlagd myndighet</dt>
+              <dd className={ds.cn('text-slate-600 mt-1', ds.typography.sizes.sm)}>
                 Myndighet som upphört genom regeringsbeslut. Uppgifter sparas för historisk analys.
               </dd>
             </div>
@@ -155,10 +156,10 @@ const AboutDataView = () => {
           <p><strong>Könsdata:</strong> Könsfördelning före 1995 är delvis rekonstruerad från aggregerad statistik
           och kan ha lägre precision.</p>
 
-          <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
-            <div className="flex gap-2 items-start">
-              <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-              <p className="text-amber-900 text-xs">
+          <div className={ds.cn('mt-4 p-3 border', ds.radius.md)} style={{ backgroundColor: ds.colors.status.warning.light, borderColor: ds.colors.status.warning.main }}>
+            <div className={ds.cn('flex items-start', ds.spacing.sm)}>
+              <AlertCircle className={ds.cn(ds.iconSizes.sm, 'mt-0.5 flex-shrink-0')} style={{ color: ds.colors.status.warning.dark }} />
+              <p className={ds.cn(ds.typography.sizes.xs)} style={{ color: ds.colors.status.warning.dark }}>
                 <strong>Obs:</strong> Data är avsedd för analys och översikt.
                 För exakta siffror och juridiska beslut, kontakta respektive myndighet eller ESV.
               </p>
@@ -175,13 +176,13 @@ const AboutDataView = () => {
               href="https://github.com/isakskogstad/myndigheter/issues"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition-colors text-sm font-medium"
+              className={ds.cn('flex items-center px-4 py-2.5 text-white', ds.spacing.sm, ds.radius.md, ds.animations.normal, ds.typography.sizes.sm, ds.typography.weights.medium, ds.buttons.variants.primary)}
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className={ds.cn(ds.iconSizes.sm)} />
               Rapportera problem på GitHub
             </a>
 
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-xs">
+            <div className={ds.cn('p-3 border', ds.radius.md, ds.typography.sizes.xs)} style={{ backgroundColor: ds.colors.slate[50], borderColor: ds.colors.slate[100] }}>
               <p className="text-slate-600">
                 Detta är ett öppet projekt skapat av <strong>Isak Skogstad</strong>.
                 All källkod finns tillgänglig på GitHub under MIT-licens.
@@ -189,8 +190,8 @@ const AboutDataView = () => {
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-200">
-            <p className="text-xs text-slate-500">
+          <div className={ds.cn('mt-6 pt-4 border-t')} style={{ borderColor: ds.colors.slate[200] }}>
+            <p className={ds.cn('text-slate-500', ds.typography.sizes.xs)}>
               <strong>Version:</strong> 10.0 • <strong>Senast uppdaterad:</strong> {new Date().toLocaleDateString('sv-SE')}
             </p>
           </div>
