@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { MoreHorizontal, Check, ArrowUpDown, FilterX, FolderSearch, Building2, Archive, Download } from 'lucide-react';
 import { deptColors } from '../../data/constants';
+import ds from '../../styles/designSystem';
 
 const getShortDeptName = (dept) => {
   if (!dept) return '';
@@ -101,76 +102,109 @@ const RegistryView = ({
   const displayAgencies = filteredAgencies.slice(0, 100);
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      
+    <div className={ds.cn('space-y-6 animate-fade-in')}>
+
       {/* Header & Controls */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm sticky top-20 z-20 backdrop-blur-xl bg-white/90">
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-          
+      <div className={ds.cn('bg-white/90 p-4', ds.radius.md, 'border sticky top-20 z-20 backdrop-blur-xl', ds.shadows.soft)} style={{ borderColor: ds.colors.slate[200] }}>
+        <div className={ds.cn('flex flex-col md:flex-row justify-between items-center', ds.spacing.md)}>
+
           {/* Filter Group */}
-          <div className="flex flex-wrap gap-3 items-center w-full md:w-auto">
-            
+          <div className={ds.cn('flex flex-wrap items-center w-full md:w-auto', ds.spacing.md)}>
+
             {/* Status Toggles (Segmented Control) */}
-            <div className="bg-slate-100 p-1 rounded-xl flex">
+            <div className={ds.cn('p-1 flex', ds.radius.md)} style={{ backgroundColor: ds.colors.slate[100] }}>
               <button
                 onClick={() => setStatusFilter('active')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${statusFilter === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={ds.cn(
+                  'px-3 py-1.5 flex items-center gap-1.5',
+                  ds.radius.sm,
+                  ds.typography.sizes.xs,
+                  ds.typography.weights.medium,
+                  ds.animations.normal,
+                  statusFilter === 'active' ? ds.cn('bg-white text-slate-900', ds.shadows.subtle) : 'text-slate-500 hover:text-slate-700'
+                )}
               >
                 <Building2 className="w-3.5 h-3.5" /> Aktiva
               </button>
               <button
                 onClick={() => setStatusFilter('dissolved')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${statusFilter === 'dissolved' ? 'bg-white text-red-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={ds.cn(
+                  'px-3 py-1.5 flex items-center gap-1.5',
+                  ds.radius.sm,
+                  ds.typography.sizes.xs,
+                  ds.typography.weights.medium,
+                  ds.animations.normal,
+                  statusFilter === 'dissolved' ? 'bg-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                )}
+                style={statusFilter === 'dissolved' ? { color: ds.colors.status.error.main } : {}}
               >
                 <Archive className="w-3.5 h-3.5" /> Nedlagda
               </button>
               <button
                 onClick={() => setStatusFilter('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${statusFilter === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={ds.cn(
+                  'px-3 py-1.5',
+                  ds.radius.sm,
+                  ds.typography.sizes.xs,
+                  ds.typography.weights.medium,
+                  ds.animations.normal,
+                  statusFilter === 'all' ? ds.cn('bg-white text-slate-900', ds.shadows.subtle) : 'text-slate-500 hover:text-slate-700'
+                )}
               >
                 Alla
               </button>
             </div>
 
-            <div className="h-6 w-px bg-slate-200 hidden md:block"></div>
+            <div className={ds.cn('h-6 w-px hidden md:block')} style={{ backgroundColor: ds.colors.slate[200] }}></div>
 
-            <select 
+            <select
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-500 transition-all cursor-pointer hover:bg-white max-w-[200px]"
+              className={ds.cn('border text-slate-700 px-3 py-2 cursor-pointer hover:bg-white max-w-[200px]', ds.radius.md, ds.typography.sizes.sm, ds.focus.ring, ds.animations.normal)}
+              style={{ backgroundColor: ds.colors.slate[50], borderColor: ds.colors.slate[200] }}
             >
               <option value="all">Alla departement</option>
               {departments.map(d => (
                 <option key={d} value={d}>{getShortDeptName(d)}</option>
               ))}
             </select>
-            
+
             {(deptFilter !== 'all' || statusFilter !== 'active' || filterText) && (
               <button
                 onClick={() => {
                   setDeptFilter('all');
-                  setStatusFilter('active'); // Reset to active
+                  setStatusFilter('active');
                   setFilterText('');
                 }}
-                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                className={ds.cn('p-2 text-slate-400 hover:bg-red-50', ds.radius.md, ds.animations.normal)}
+                style={{ color: ds.colors.slate[400] }}
+                onMouseEnter={(e) => e.target.style.color = ds.colors.status.error.main}
+                onMouseLeave={(e) => e.target.style.color = ds.colors.slate[400]}
                 title="Återställ filter"
               >
-                <FilterX className="w-5 h-5" />
+                <FilterX className={ds.cn(ds.iconSizes.md)} />
               </button>
             )}
 
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-medium transition-colors shadow-sm"
+              className={ds.cn(
+                'flex items-center gap-2 px-3 py-2 text-white',
+                ds.radius.md,
+                ds.typography.sizes.sm,
+                ds.typography.weights.medium,
+                ds.buttons.variants.primary,
+                ds.shadows.soft
+              )}
               title="Exportera filtrerad lista"
             >
-              <Download className="w-4 h-4" />
+              <Download className={ds.iconSizes.sm} />
               <span className="hidden sm:inline">Exportera ({filteredAgencies.length})</span>
               <span className="sm:hidden">{filteredAgencies.length}</span>
             </button>
           </div>
-          
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider whitespace-nowrap">
+
+          <span className={ds.cn(ds.typography.sizes.xs, 'font-mono text-slate-400 uppercase tracking-wider whitespace-nowrap')}>
             {filteredAgencies.length} träffar
           </span>
         </div>
@@ -178,26 +212,30 @@ const RegistryView = ({
 
       {/* Empty State */}
       {filteredAgencies.length === 0 ? (
-        <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center flex flex-col items-center">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+        <div className={ds.cn('border-2 border-dashed p-12 text-center flex flex-col items-center', ds.radius.lg)} style={{ backgroundColor: ds.colors.slate[50], borderColor: ds.colors.slate[200] }}>
+          <div className={ds.cn('w-16 h-16 bg-white flex items-center justify-center mb-4', ds.radius.full, ds.shadows.subtle)}>
             <FolderSearch className="w-8 h-8 text-slate-300" />
           </div>
-          <h3 className="text-lg font-serif font-medium text-slate-900 mb-1">Inga myndigheter hittades</h3>
-          <p className="text-slate-500 text-sm max-w-md mx-auto">
-            Vi hittade inget som matchar din sökning. 
+          <h3 className={ds.cn('font-serif text-slate-900 mb-1', ds.typography.sizes.lg, ds.typography.weights.medium)}>Inga myndigheter hittades</h3>
+          <p className={ds.cn('text-slate-500 max-w-md mx-auto', ds.typography.sizes.sm)}>
+            Vi hittade inget som matchar din sökning.
             {statusFilter === 'active' && " Prova att inkludera nedlagda myndigheter."}
           </p>
-          <div className="flex gap-2 mt-6">
-            <button 
+          <div className={ds.cn('flex mt-6', ds.spacing.sm)}>
+            <button
               onClick={() => { setFilterText(''); setDeptFilter('all'); }}
-              className="px-6 py-2 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
+              className={ds.cn('px-6 py-2 bg-white border text-slate-700', ds.radius.md, ds.typography.weights.medium, ds.animations.normal, ds.shadows.subtle, 'hover:bg-slate-50')}
+              style={{ borderColor: ds.colors.slate[200] }}
             >
               Rensa sökning
             </button>
             {statusFilter === 'active' && (
-              <button 
+              <button
                 onClick={() => setStatusFilter('all')}
-                className="px-6 py-2 bg-primary-50 text-primary-700 font-medium rounded-xl hover:bg-primary-100 transition-colors shadow-sm"
+                className={ds.cn('px-6 py-2', ds.radius.md, ds.typography.weights.medium, ds.animations.normal, ds.shadows.subtle)}
+                style={{ backgroundColor: ds.colors.primary[50], color: ds.colors.primary[700] }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = ds.colors.primary[100]}
+                onMouseLeave={(e) => e.target.style.backgroundColor = ds.colors.primary[50]}
               >
                 Sök i alla register
               </button>
@@ -206,7 +244,7 @@ const RegistryView = ({
         </div>
       ) : (
         /* Table */
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-card overflow-hidden">
+        <div className={ds.cn('bg-white border overflow-hidden', ds.radius.lg, ds.shadows.card)} style={{ borderColor: ds.colors.slate[200] }}>
           <div className="overflow-x-auto max-h-[70vh]">
             <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50/90 backdrop-blur sticky top-0 z-10 shadow-sm">
