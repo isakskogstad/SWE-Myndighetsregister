@@ -3,9 +3,9 @@ import { ChevronDown, ChevronUp, Database, ExternalLink, Building2, Users, Trend
 
 const IntroSection = ({ agencyCount, activeCount, dissolvedCount }) => {
   const [isCollapsed, setIsCollapsed] = useState(() => {
-    // Check localStorage for user preference, default to expanded on first visit
+    // Check localStorage for user preference, default to collapsed
     const stored = localStorage.getItem('introCollapsed');
-    return stored ? JSON.parse(stored) : false;
+    return stored !== null ? JSON.parse(stored) : true;
   });
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const IntroSection = ({ agencyCount, activeCount, dissolvedCount }) => {
   ];
 
   return (
-    <div className="intro-section rounded-xl mb-6 overflow-hidden">
+    <div className="intro-section rounded-xl mb-4 overflow-hidden">
       {/* Header - always visible */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
